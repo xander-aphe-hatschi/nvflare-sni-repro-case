@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  dummy-server-for-client:
+    build: .
+    ports:
+      - 8011:8000
+    command: >
+      openssl s_server -www -port 8000 -cert workspace/startup/server.crt -key workspace/startup/server.key -tlsextdebug
+      
+
+  dummy-server-for-admin:
+    build: .
+    ports:
+      - 8012:8000
+    command: >
+      openssl s_server -www -port 8000 -cert workspace/startup/server.crt -key workspace/startup/server.key -tlsextdebug
+      
+    

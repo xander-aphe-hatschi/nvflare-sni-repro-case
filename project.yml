@@ -1,0 +1,34 @@
+api_version: 3
+name: repro-case
+description: nvflare sample project used to debug SNI issue from admin client
+
+participants:
+  - name: nvflare-server
+    type: server
+    org: my_org
+    fed_learn_port: 8011
+    admin_port: 8012
+  - name: nvflare-client
+    type: client
+    org: my_org
+  - name: nvflare-user@example.com
+    type: admin
+    org: my_org
+    role: project_admin
+
+builders:
+  - path: nvflare.lighter.impl.workspace.WorkspaceBuilder
+    args:
+      template_file: master_template.yml
+  - path: nvflare.lighter.impl.template.TemplateBuilder
+  - path: nvflare.lighter.impl.static_file.StaticFileBuilder
+    args:
+      config_folder: config
+      overseer_agent:
+        path: nvflare.ha.dummy_overseer_agent.DummyOverseerAgent
+        overseer_exists: false
+        args:
+          sp_end_point: nvflare-server:8011:8012
+
+  - path: nvflare.lighter.impl.cert.CertBuilder
+  - path: nvflare.lighter.impl.signature.SignatureBuilder
